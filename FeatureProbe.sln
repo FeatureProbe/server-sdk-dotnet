@@ -1,0 +1,103 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1706.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B6C6B9A-8633-4832-865B-9D557A018AA4}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github Workflow", "Github Workflow", "{E2E4AD3F-7769-4942-B0C3-D2FEDCC90C31}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\codeql.yml = .github\workflows\codeql.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+		.github\workflows\docs.yml = .github\workflows\docs.yml
+		.github\workflows\lint.yml = .github\workflows\lint.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E283CF98-D2A5-445A-9474-F0DE1F587F9F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{A374D11A-2461-4993-B978-0F3A02CF09EE}"
+	ProjectSection(SolutionItems) = preProject
+		.config\dotnet-tools.json = .config\dotnet-tools.json
+		.pre-commit-config.yaml = .pre-commit-config.yaml
+		.releaserc = .releaserc
+		.editorconfig = .editorconfig
+		.licenserc.yaml = .licenserc.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5655A0C4-70FE-4596-A0E9-0D4D48095DD0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{1C970764-B872-4F69-985E-BFD056FD9623}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureProbe.Server.Sdk.SampleConsole", "samples\FeatureProbe.Server.Sdk.SampleConsole\FeatureProbe.Server.Sdk.SampleConsole.csproj", "{636C70D3-3B26-4C4D-BA6F-A60AA3BC6A35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureProbe.AspNet.Sdk.SampleApi", "samples\FeatureProbe.AspNet.Sdk.SampleApi\FeatureProbe.AspNet.Sdk.SampleApi.csproj", "{8EE33C6F-31AC-41A7-967F-DCF52A3C4058}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureProbe.Server.Sdk", "src\FeatureProbe.Server.Sdk\FeatureProbe.Server.Sdk.csproj", "{73916DEC-E93F-4D93-A710-71BA8039DB32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureProbe.Server.Sdk.IT", "tests\FeatureProbe.Server.Sdk.IT\FeatureProbe.Server.Sdk.IT.csproj", "{F53E8D4B-5955-4175-950E-3CAC0EC15A2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureProbe.Server.Sdk.UT", "tests\FeatureProbe.Server.Sdk.UT\FeatureProbe.Server.Sdk.UT.csproj", "{0CEE71F3-34FE-40F5-BE56-E78D1887BFA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureProbe.AspNet.Sdk", "src\FeatureProbe.AspNet.Sdk\FeatureProbe.AspNet.Sdk.csproj", "{368053F9-56FB-4D53-B7B0-6B637F75079B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{636C70D3-3B26-4C4D-BA6F-A60AA3BC6A35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{636C70D3-3B26-4C4D-BA6F-A60AA3BC6A35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{636C70D3-3B26-4C4D-BA6F-A60AA3BC6A35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{636C70D3-3B26-4C4D-BA6F-A60AA3BC6A35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EE33C6F-31AC-41A7-967F-DCF52A3C4058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EE33C6F-31AC-41A7-967F-DCF52A3C4058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EE33C6F-31AC-41A7-967F-DCF52A3C4058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EE33C6F-31AC-41A7-967F-DCF52A3C4058}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73916DEC-E93F-4D93-A710-71BA8039DB32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73916DEC-E93F-4D93-A710-71BA8039DB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73916DEC-E93F-4D93-A710-71BA8039DB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73916DEC-E93F-4D93-A710-71BA8039DB32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F53E8D4B-5955-4175-950E-3CAC0EC15A2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F53E8D4B-5955-4175-950E-3CAC0EC15A2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F53E8D4B-5955-4175-950E-3CAC0EC15A2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F53E8D4B-5955-4175-950E-3CAC0EC15A2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CEE71F3-34FE-40F5-BE56-E78D1887BFA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEE71F3-34FE-40F5-BE56-E78D1887BFA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEE71F3-34FE-40F5-BE56-E78D1887BFA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEE71F3-34FE-40F5-BE56-E78D1887BFA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{368053F9-56FB-4D53-B7B0-6B637F75079B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{368053F9-56FB-4D53-B7B0-6B637F75079B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{368053F9-56FB-4D53-B7B0-6B637F75079B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{368053F9-56FB-4D53-B7B0-6B637F75079B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B55BE272-6AFC-485E-9B04-AD4E571D3329}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E2E4AD3F-7769-4942-B0C3-D2FEDCC90C31} = {2B6C6B9A-8633-4832-865B-9D557A018AA4}
+		{A374D11A-2461-4993-B978-0F3A02CF09EE} = {2B6C6B9A-8633-4832-865B-9D557A018AA4}
+		{636C70D3-3B26-4C4D-BA6F-A60AA3BC6A35} = {E283CF98-D2A5-445A-9474-F0DE1F587F9F}
+		{8EE33C6F-31AC-41A7-967F-DCF52A3C4058} = {E283CF98-D2A5-445A-9474-F0DE1F587F9F}
+		{73916DEC-E93F-4D93-A710-71BA8039DB32} = {1C970764-B872-4F69-985E-BFD056FD9623}
+		{F53E8D4B-5955-4175-950E-3CAC0EC15A2B} = {5655A0C4-70FE-4596-A0E9-0D4D48095DD0}
+		{0CEE71F3-34FE-40F5-BE56-E78D1887BFA8} = {5655A0C4-70FE-4596-A0E9-0D4D48095DD0}
+		{368053F9-56FB-4D53-B7B0-6B637F75079B} = {1C970764-B872-4F69-985E-BFD056FD9623}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		description = FeatureProbe is an open source feature management service.
+		version = 0.1.0
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ReGitLint
+        name: ReGitLint code clean up
+        entry: dotnet regitlint -f staged
+        language: system
+        pass_filenames: false

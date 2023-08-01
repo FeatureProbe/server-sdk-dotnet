@@ -1,0 +1,10 @@
+﻿name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# strategy: linux, macos, windows
+# test & cov

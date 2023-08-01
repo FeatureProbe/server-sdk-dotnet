@@ -1,0 +1,9 @@
+﻿name: Lint PR
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  title:
+    runs-on: ubuntu-latest
