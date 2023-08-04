@@ -18,8 +18,6 @@ public class FPClientTest
 
         var data = File.ReadAllText("resources/test/spec/toggle_simple_spec.json");
         _testCase = JsonSerializer.Deserialize<JsonNode>(data)!;
-
-        _testOutputHelper.WriteLine(data);
     }
 
     [Fact]
@@ -122,9 +120,10 @@ public class FPClientTest
             var fixture = scenario["fixture"]!;
 
             var dataRepository = new MemoryDataRepository();
+            
             var repository = JsonSerializer.Deserialize<Repository>(fixture.ToString())!;
             dataRepository.Refresh(repository);
-
+            
             var fpClient = new FPClient("server-xxx");
             var dataRepoField =
                 typeof(FPClient).GetField("_dataRepository", BindingFlags.NonPublic | BindingFlags.Instance)!;
@@ -134,7 +133,7 @@ public class FPClientTest
             foreach (var testCase in cases)
             {
                 var caseName = testCase!["name"]!.ToString();
-                _testOutputHelper.WriteLine($"starting execute scenario: {name}, case: {caseName}");
+                _testOutputHelper.WriteLine($"[started] scenario: {name}, case: {caseName}");
 
                 var userCase = testCase["user"]!;
                 var user = new FPUser().StableRollout(userCase["key"]!.ToString());
@@ -180,8 +179,37 @@ public class FPClientTest
                         Assert.Equal(jsonExpectString, jsonResString);
                         break;
                     }
-                    // case "bool_detail":
+                    case "bool_detail":
+                    {
+                        var boolDetailRes = fpClient.BoolDetail(toggleKey, user, defaultValue.GetValue<bool>());
+                        Assert.Equal(expectValue.GetValue<bool>(), boolDetailRes.Value);
+                        break;
+                    }
+                    case "number_detail":
+                    {
+                        var numberDetailRes = fpClient.NumberDetail(toggleKey, user, defaultValue.GetValue<double>());
+                        Assert.Equal(expectValue.GetValue<double>(), numberDetailRes.Value);
+                        break;
+                    }
+                    case "json_detail":
+                    {
+                        var jsonDetailDefaultMap =
+                            JsonSerializer.Deserialize<Dictionary<string, object>>(defaultValue.ToString())!;
+                        var jsonDetailRes = fpClient.JsonDetail(toggleKey, user, jsonDetailDefaultMap);
+                        var jsonExpectString = JsonSerializer.Serialize(expectValue);
+                        var jsonResString = JsonSerializer.Serialize(jsonDetailRes.Value);
+                        Assert.Equal(jsonExpectString, jsonResString);
+                        break;
+                    }
+                    case "string_detail":
+                    {
+                        var stringDetailRes = fpClient.StringDetail(toggleKey, user, defaultValue.GetValue<string>());
+                        _testOutputHelper.WriteLine(JsonSerializer.Serialize(stringDetailRes));
+                        Assert.Equal(expectValue.GetValue<string>(), stringDetailRes.Value);
+                        break;
+                    }
                 }
+                _testOutputHelper.WriteLine($"[passed] scenario: {name}, case: {caseName}");
             }
         }
     }

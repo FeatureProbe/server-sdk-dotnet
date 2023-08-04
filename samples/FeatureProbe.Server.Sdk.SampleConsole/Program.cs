@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using FeatureProbe.Server.Sdk.Events;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 
 namespace FeatureProbe.Server.Sdk.SampleConsole;
@@ -11,8 +9,7 @@ public class Program
     {
         var config = new FPConfig.Builder()
             //// Must provide the server-side SDK Key for your project and environment
-            .ServerSdkKey("server-cff5f88e38c239a1ff9cfa363409c2adfdefe185") // delete
-            // .ServerSdkKey("server-8ed48815ef044428826787e9a238b9c6a479f98c")
+            .ServerSdkKey("server-8ed48815ef044428826787e9a238b9c6a479f98c")
             //// RemoteUrl is where you deploy the FeatureProbe server, by default, SDK will use its API for reporting events, synchronizing toggles, and so
             .RemoteUrl("https://featureprobe.io/server") // FeatureProbe online demo
             // .RemoteUrl("http://localhost:4009/server")  // Default URL for local Docker installation, also the default value if unset
@@ -37,7 +34,6 @@ public class Program
         //
         // Get toggle result for this user.
         //
-
         const string toggleKey = "bool_toggle";
 
         var isOpen = fp.BoolValue(toggleKey, user, false);
@@ -47,14 +43,6 @@ public class Program
         var isOpenDetail = fp.BoolDetail(toggleKey, user, false);
         Console.WriteLine($"Detail reason: {isOpenDetail.Reason}");
         Console.WriteLine($"Rule index: {isOpenDetail.RuleIndex}");
-
-        Console.WriteLine(JsonSerializer.Serialize(
-            (BaseEvent)new CustomEvent("sda", "dsf", null)
-        ));
-
-        Console.WriteLine(JsonSerializer.Serialize(
-            (BaseEvent)new DebugEvent(user, "sad", null, null, null, null, null)
-        ));
 
         //
         // Simulate conversion rate of 1000 users for a new feature.

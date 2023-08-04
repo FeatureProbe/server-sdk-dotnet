@@ -52,13 +52,9 @@ public class MemoryDataRepository : IDataRepository
         return !_initialized ? null : _data?.Segments.TryGetValue(key);
     }
 
-    public void Refresh(Repository? repo)
+    public virtual void Refresh(Repository? repo)
     {
-        if (repo is null || repo.Segments.Count == 0 || repo.Toggles.Count == 0)
-        {
-            return;
-        }
-
+        if (repo is null) return;
         lock (this)
         {
             _data = new Repository

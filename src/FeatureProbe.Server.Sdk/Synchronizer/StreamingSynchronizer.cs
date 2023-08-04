@@ -18,6 +18,12 @@ public class StreamingSynchronizer : ISynchronizer
         _socket = ConnectSocket(config);
     }
 
+    internal StreamingSynchronizer(FPConfig config, PollingSynchronizer synchronizer)
+    {
+        _pollingSynchronizer = synchronizer;
+        _socket = ConnectSocket(config);
+    }
+
     public Task SynchronizeAsync() => _pollingSynchronizer.SynchronizeAsync();
 
     public async ValueTask DisposeAsync()
@@ -33,7 +39,7 @@ public class StreamingSynchronizer : ISynchronizer
             Transport = TransportProtocol.WebSocket, Path = new Uri(config.RealtimeUrl).LocalPath
         };
         var socket = new SocketIO(config.RealtimeUrl, options);
-        
+
         socket.OnConnected += async (sender, args) =>
         {
             Loggers.Synchronizer?.Log(LogLevel.Information, "Connect socket success");
@@ -50,7 +56,7 @@ public class StreamingSynchronizer : ISynchronizer
         socket.On("update", async (resp) =>
         {
             Loggers.Synchronizer?.Log(LogLevel.Information, "Socket received update event");
-            await _pollingSynchronizer.SynchronizeAsync();
+            await _pollingSynchronizer.PollAsync();
         });
 
         socket.ConnectAsync().Wait();

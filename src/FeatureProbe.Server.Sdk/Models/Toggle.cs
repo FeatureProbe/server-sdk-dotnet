@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using FeatureProbe.Server.Sdk.Exceptions;
 using FeatureProbe.Server.Sdk.Results;
@@ -121,7 +122,8 @@ public class Toggle
 
             var eval = toggle.DoEval(user, toggles, segments, null, deep - 1);
             if (eval.Value is null) return false;
-            if (!eval.Value.Equals(prerequisite.Value)) return false;
+            if (!JsonSerializer.Serialize(eval.Value).Equals(JsonSerializer.Serialize(prerequisite.Value)))
+                return false;
         }
 
         return true;
