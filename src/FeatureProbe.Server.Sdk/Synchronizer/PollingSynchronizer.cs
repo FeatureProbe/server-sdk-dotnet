@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 FeatureProbe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 using System.Text.Json;
 using FeatureProbe.Server.Sdk.DataRepositories;
 using FeatureProbe.Server.Sdk.Internal;
@@ -8,17 +24,16 @@ namespace FeatureProbe.Server.Sdk.Synchronizer;
 
 public class PollingSynchronizer : ISynchronizer
 {
-    private readonly TimeSpan _refreshInterval;
-
     private readonly string _apiUrl;
 
     private readonly IDataRepository _dataRepo;
 
     private readonly HttpClient _httpClient;
-
-    private Timer? _timer;
+    private readonly TimeSpan _refreshInterval;
 
     private TaskCompletionSource<bool>? _initTask;
+
+    private Timer? _timer;
 
     internal PollingSynchronizer(FPConfig config, IDataRepository dataRepo)
     {
@@ -33,7 +48,7 @@ public class PollingSynchronizer : ISynchronizer
         }
 
         _timer = null;
-        _initTask = new();
+        _initTask = new TaskCompletionSource<bool>();
     }
 
     public async Task SynchronizeAsync()

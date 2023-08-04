@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 FeatureProbe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 using FeatureProbe.Server.Sdk.DataRepositories;
 using FeatureProbe.Server.Sdk.Internal;
 using Microsoft.Extensions.Logging;
@@ -24,7 +40,10 @@ public class StreamingSynchronizer : ISynchronizer
         _socket = ConnectSocket(config);
     }
 
-    public Task SynchronizeAsync() => _pollingSynchronizer.SynchronizeAsync();
+    public Task SynchronizeAsync()
+    {
+        return _pollingSynchronizer.SynchronizeAsync();
+    }
 
     public async ValueTask DisposeAsync()
     {
@@ -53,7 +72,7 @@ public class StreamingSynchronizer : ISynchronizer
         socket.OnError += (sender, args) =>
             Loggers.Synchronizer?.Log(LogLevel.Error, "Socket error: {args}", args);
 
-        socket.On("update", async (resp) =>
+        socket.On("update", async resp =>
         {
             Loggers.Synchronizer?.Log(LogLevel.Information, "Socket received update event");
             await _pollingSynchronizer.PollAsync();
