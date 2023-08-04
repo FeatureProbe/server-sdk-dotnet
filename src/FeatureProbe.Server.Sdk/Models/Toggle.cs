@@ -40,16 +40,16 @@ public class Toggle
         {
             return DoEval(user, toggles, segments, defaultValue, deep);
         }
-        catch (PrerequisiteException e)
+        catch (Exception e) when (e is PrerequisiteException or PrerequisitesDeepOverflowException)
         {
             reason = e.Message;
         }
 
         return HitValue(
-            hitResult: DefaultServe.EvalIndex(user, Key),
-            defaultValue: defaultValue,
-            ruleIndex: null,
-            reasonOverride: reason
+            DefaultServe.EvalIndex(user, Key),
+            defaultValue,
+            null,
+            reason
         );
     }
 
@@ -59,32 +59,32 @@ public class Toggle
         if (!Enabled)
         {
             return HitValue(
-                hitResult: DisabledServe.EvalIndex(user, this.Key),
-                defaultValue: defaultValue,
-                ruleIndex: null,
-                reasonOverride: "Toggle disabled"
+                DisabledServe.EvalIndex(user, Key),
+                defaultValue,
+                null,
+                "Toggle disabled"
             );
         }
 
         if (deep <= 0)
         {
-            throw new PrerequisiteException("Prerequisite deep overflow");
+            throw new PrerequisitesDeepOverflowException("Prerequisite deep overflow");
         }
 
         if (!MeetPrerequisite(user, toggles, segments, deep))
         {
             return HitValue(
-                hitResult: DefaultServe.EvalIndex(user, Key),
-                defaultValue: defaultValue,
-                ruleIndex: null,
-                reasonOverride: "Default rule hit"
+                DefaultServe.EvalIndex(user, Key),
+                defaultValue,
+                null,
+                "Default rule hit"
             );
         }
 
         string? warning = null;
         if (Rules is not null && Rules.Count > 0)
         {
-            for (int i = 0; i < Rules.Count; i++)
+            for (var i = 0; i < Rules.Count; i++)
             {
                 var rule = Rules[i];
                 var hitResult = rule.Hit(user, segments, Key);
@@ -98,10 +98,10 @@ public class Toggle
         }
 
         return HitValue(
-            hitResult: DefaultServe.EvalIndex(user, Key),
-            defaultValue: defaultValue,
-            ruleIndex: null,
-            reasonOverride: $"Default rule hit. {warning ?? string.Empty}"
+            DefaultServe.EvalIndex(user, Key),
+            defaultValue,
+            null,
+            $"Default rule hit. {warning ?? string.Empty}"
         );
     }
 
@@ -121,9 +121,15 @@ public class Toggle
             }
 
             var eval = toggle.DoEval(user, toggles, segments, null, deep - 1);
-            if (eval.Value is null) return false;
-            if (!JsonSerializer.Serialize(eval.Value).Equals(JsonSerializer.Serialize(prerequisite.Value)))
+            if (eval.Value is null)
+            {
                 return false;
+            }
+
+            if (!JsonSerializer.Serialize(eval.Value).Equals(JsonSerializer.Serialize(prerequisite.Value)))
+            {
+                return false;
+            }
         }
 
         return true;
@@ -138,15 +144,15 @@ public class Toggle
         if (hitResult.Index is not null)
         {
             var variation = Variations[hitResult.Index.Value];
-            value = (defaultValue is double && variation is int) ? Convert.ToDouble(variation) : variation;
+            value = defaultValue is double && variation is int ? Convert.ToDouble(variation) : variation;
             reason = ruleIndex is not null ? $"Rule {ruleIndex} hit" : hitResult.Reason;
         }
 
         return new EvaluationResult(
-            Value: value,
+            value,
             RuleIndex: ruleIndex,
             VariationIndex: hitResult.Index,
-            Version: this.Version,
+            Version: Version,
             Reason: reasonOverride ?? reason
         );
     }

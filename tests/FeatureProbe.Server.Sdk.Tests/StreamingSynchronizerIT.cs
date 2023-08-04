@@ -1,26 +1,18 @@
 ﻿using System.Reflection;
-using System.Text.Json;
 using FeatureProbe.Server.Sdk.DataRepositories;
 using FeatureProbe.Server.Sdk.Models;
 using Moq;
-using Xunit.Abstractions;
 
 namespace FeatureProbe.Server.Sdk.IT;
 
 public class StreamingSynchronizerIT
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     // TODO: use TestContainers
 
     internal static readonly Mock<MemoryDataRepository> _mockedDataRepository = new();
 
-    public StreamingSynchronizerIT(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-    }
-
     [Fact]
-    void TestSocketRealtimeToggleUpdate()
+    private void TestSocketRealtimeToggleUpdate()
     {
         var config = new FPConfig.Builder()
             .ServerSdkKey("server-8ed48815ef044428826787e9a238b9c6a479f98c")

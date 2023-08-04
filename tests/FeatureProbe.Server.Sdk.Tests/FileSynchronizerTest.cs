@@ -6,7 +6,7 @@ namespace FeatureProbe.Server.Sdk.UT;
 public class FileSynchronizerTest
 {
     [Fact]
-    void TestDeserializeFile()
+    private void TestDeserializeFile()
     {
         var config = new FPConfig.Builder()
             .ServerSdkKey("server-8ed48815ef044428826787e9a238b9c6a479f98c")
