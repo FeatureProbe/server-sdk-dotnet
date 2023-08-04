@@ -4,7 +4,7 @@ using FeatureProbe.Server.Sdk.Events;
 
 namespace FeatureProbe.Server.Sdk.Processors;
 
-internal class AccessSummaryRecorder
+public class AccessSummaryRecorder
 {
     [JsonPropertyName("counters")]
     public Dictionary<string, List<AccessCounter>> Counters { get; private set; } = new();
@@ -49,7 +49,7 @@ internal class AccessSummaryRecorder
     public void Clear() => this.Counters = new();
 }
 
-internal class AccessCounter : ICloneable
+public class AccessCounter : ICloneable
 {
     [JsonPropertyName("count")]
     public long Count { get; private set; }

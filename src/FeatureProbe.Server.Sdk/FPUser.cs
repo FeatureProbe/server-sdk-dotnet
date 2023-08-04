@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace FeatureProbe.Server.Sdk;
 
@@ -22,11 +23,13 @@ public class FPUser
     /// <summary>
     /// FPUser's unique identifier.
     /// </summary>
+    [JsonPropertyName("key")]
     public string Key { get; private set; }
 
     /// <summary>
     /// FPUser's all attributes.
     /// </summary>
+    [JsonPropertyName("attributes")]
     public Dictionary<string, string> Attributes { get; set; }
 
     public string? this[string key]
