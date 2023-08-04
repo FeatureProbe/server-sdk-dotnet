@@ -21,7 +21,7 @@ public sealed class FPConfig
         SynchronizerUrl = builder.SynchronizerUrlVal ?? $"{RemoteUrl}/api/server-sdk/toggles";
         EventUrl = builder.EventUrlVal ?? $"{RemoteUrl}/api/events";
         RealtimeUrl = builder.RealtimeUrlVal ?? $"{RemoteUrl}/realtime";
-        FileLocation = builder.FileLocation ?? Path.Combine(Environment.CurrentDirectory, "datasource/repo.json");
+        FileLocation = builder.FileLocation ?? "datasource/repo.json";
         RefreshInterval = builder.RefreshInterval ?? TimeSpan.FromSeconds(5);
         HttpConfig = builder.HttpConfig ?? new HttpConfig();
         PrerequisiteDeep = builder.PrerequisiteDeepVal ?? 20;
@@ -161,7 +161,7 @@ public sealed class FPConfig
         /// <param name="location">
         ///     File path, default will be 'datasource/repo.json' under current directory.
         /// </param>
-        public Builder LocalFileMode(string? location = null)
+        public Builder LocalFileMode(string location = "datasource/repo.json")
         {
             FileLocation = location;
             SynchronizerFactory = new FileSynchronizerFactory();

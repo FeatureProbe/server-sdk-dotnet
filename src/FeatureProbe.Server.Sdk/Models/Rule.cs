@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json.Serialization;
-using FeatureProbe.Server.Sdk.Predicates;
 using FeatureProbe.Server.Sdk.Results;
 
 namespace FeatureProbe.Server.Sdk.Models;
@@ -25,7 +24,7 @@ public class Rule
                 && !user.ContainAttr(condition.Subject))
             {
                 return new HitResult(
-                    Hit: false,
+                    false,
                     Reason: $"Warning: User with key '{user.Key}' does not have attribute name '{condition.Subject}'"
                 );
             }

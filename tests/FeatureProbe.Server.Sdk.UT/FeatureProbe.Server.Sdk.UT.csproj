@@ -28,9 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="resources\" CopyToOutputDirectory="Always" />
-    <None Update="resources\datasource\repo.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Update="resources\**\*" CopyToOutputDirectory="Always" />
   </ItemGroup>
 </Project>

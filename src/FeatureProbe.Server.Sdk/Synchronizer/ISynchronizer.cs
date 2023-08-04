@@ -1,5 +1,4 @@
 ﻿using FeatureProbe.Server.Sdk.DataRepositories;
-using FeatureProbe.Server.Sdk.Internal;
 
 namespace FeatureProbe.Server.Sdk.Synchronizer;
 

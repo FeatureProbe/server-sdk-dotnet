@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using FeatureProbe.Server.Sdk.Internal;
 using FeatureProbe.Server.Sdk.Models;
 
 namespace FeatureProbe.Server.Sdk.DataRepositories;
@@ -17,7 +16,7 @@ public interface IDataRepository : IAsyncDisposable
     Toggle? GetToggle(string key);
 
     Segment? GetSegment(string key);
-    
+
     void Refresh(Repository? repo);
 }
 

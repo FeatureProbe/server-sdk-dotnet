@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using FeatureProbe.Server.Sdk.Events;
 
 namespace FeatureProbe.Server.Sdk.Processors;
@@ -9,15 +8,17 @@ public class AccessSummaryRecorder
     [JsonPropertyName("counters")]
     public Dictionary<string, List<AccessCounter>> Counters { get; private set; } = new();
 
-    [JsonPropertyName("startTime")]
-    public long StartTime { get; private set; }
+    [JsonPropertyName("startTime")] public long StartTime { get; private set; }
 
-    [JsonPropertyName("endTime")]
-    public long EndTime { get; private set; }
+    [JsonPropertyName("endTime")] public long EndTime { get; private set; }
 
     public void Add(AccessEvent @event)
     {
-        if (Counters.Count == 0) StartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        if (Counters.Count == 0)
+        {
+            StartTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        }
+
         if (!Counters.ContainsKey(@event.Key))
         {
             var groups = new List<AccessCounter> { new(@event.Value, @event.Version, @event.VariationIndex) };
@@ -27,9 +28,15 @@ public class AccessSummaryRecorder
         {
             var counters = Counters[@event.Key];
             var existingCnt = counters.Find(c => c.IsGroup(@event.Version, @event.VariationIndex));
-            
-            if (existingCnt is not null) existingCnt.Increment();
-            else counters.Add(new AccessCounter(@event.Value, @event.Version, @event.VariationIndex));
+
+            if (existingCnt is not null)
+            {
+                existingCnt.Increment();
+            }
+            else
+            {
+                counters.Add(new AccessCounter(@event.Value, @event.Version, @event.VariationIndex));
+            }
         }
     }
 
@@ -37,52 +44,51 @@ public class AccessSummaryRecorder
     {
         return new AccessSummaryRecorder
         {
-            Counters = this.Counters.ToDictionary(
+            Counters = Counters.ToDictionary(
                 pair => pair.Key,
                 pair => pair.Value.Select(counter => (AccessCounter)counter.Clone()).ToList()
             ),
-            StartTime = this.StartTime,
+            StartTime = StartTime,
             EndTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
         };
     }
 
-    public void Clear() => this.Counters = new();
+    public void Clear()
+    {
+        Counters = new Dictionary<string, List<AccessCounter>>();
+    }
 }
 
 public class AccessCounter : ICloneable
 {
-    [JsonPropertyName("count")]
-    public long Count { get; private set; }
-
-    [JsonPropertyName("value")]
-    public object? Value { get; }
-
-    [JsonPropertyName("version")]
-    public long? Version { get; }
-
-    [JsonPropertyName("index")]
-    public int? Index { get; }
-
     public AccessCounter(object? value, long? version, int? index)
     {
-        this.Count = 1;
-        this.Value = value;
-        this.Version = version;
-        this.Index = index;
+        Count = 1;
+        Value = value;
+        Version = version;
+        Index = index;
+    }
+
+    [JsonPropertyName("count")] public long Count { get; private set; }
+
+    [JsonPropertyName("value")] public object? Value { get; }
+
+    [JsonPropertyName("version")] public long? Version { get; }
+
+    [JsonPropertyName("index")] public int? Index { get; }
+
+    public object Clone()
+    {
+        return new AccessCounter(Value, Version, Index) { Count = Count };
     }
 
     public void Increment()
     {
-        this.Count++;
+        Count++;
     }
 
     public bool IsGroup(long? version, int? index)
     {
-        return this.Version == version && this.Index == index;
-    }
-
-    public object Clone()
-    {
-        return new AccessCounter(this.Value, this.Version, this.Index) { Count = this.Count };
+        return Version == version && Index == index;
     }
 }

@@ -8,15 +8,19 @@ public class MemoryDataRepository : IDataRepository
 {
     private volatile Repository? _data;
 
-    private volatile bool _initialized = false;
+    private volatile bool _initialized;
 
-    private long _updatedTimestamp = 0;
+    private long _updatedTimestamp;
 
     public ImmutableDictionary<string, Toggle> Toggles
     {
         get
         {
-            if (!_initialized) return ImmutableDictionary<string, Toggle>.Empty;
+            if (!_initialized)
+            {
+                return ImmutableDictionary<string, Toggle>.Empty;
+            }
+
             return _data?.Toggles ?? ImmutableDictionary<string, Toggle>.Empty;
         }
     }
@@ -25,26 +29,18 @@ public class MemoryDataRepository : IDataRepository
     {
         get
         {
-            if (!_initialized) return ImmutableDictionary<string, Segment>.Empty;
+            if (!_initialized)
+            {
+                return ImmutableDictionary<string, Segment>.Empty;
+            }
+
             return _data?.Segments ?? ImmutableDictionary<string, Segment>.Empty;
         }
     }
 
-    public long DebugUntilTime
-    {
-        get
-        {
-            return _data?.DebugUntilTime ?? 0;
-        }
-    }
+    public long DebugUntilTime => _data?.DebugUntilTime ?? 0;
 
-    public bool Initialized
-    {
-        get
-        {
-            return _initialized;
-        }
-    }
+    public bool Initialized => _initialized;
 
     public Toggle? GetToggle(string key)
     {
@@ -58,7 +54,11 @@ public class MemoryDataRepository : IDataRepository
 
     public void Refresh(Repository? repo)
     {
-        if (repo?.Segments is null || repo?.Toggles is null) return;
+        if (repo is null || repo.Segments.Count == 0 || repo.Toggles.Count == 0)
+        {
+            return;
+        }
+
         lock (this)
         {
             _data = new Repository
