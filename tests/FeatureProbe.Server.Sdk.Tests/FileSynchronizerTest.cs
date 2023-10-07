@@ -16,11 +16,19 @@
 
 using System.Reflection;
 using FeatureProbe.Server.Sdk.DataRepositories;
+using Xunit.Abstractions;
 
 namespace FeatureProbe.Server.Sdk.UT;
 
 public class FileSynchronizerTest
 {
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public FileSynchronizerTest(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
+
     [Fact]
     private void TestDeserializeFile()
     {
@@ -30,12 +38,30 @@ public class FileSynchronizerTest
             .LocalFileMode(path)
             .Build();
 
-        using var fp = new FPClient(config, 100);
+        using var fp = new FPClient(config, -1);
         var dataRepo = (IDataRepository)fp.GetType()
             .GetField("_dataRepository", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(fp)!;
 
         Assert.True(dataRepo.Initialized);
         Assert.NotEmpty(dataRepo.Segments);
         Assert.NotEmpty(dataRepo.Toggles);
+    }
+
+    [Fact]
+    private void TestDeserializeFileFail()
+    {
+        var path = Path.Combine("resources", "datasource", "not-exists.json");
+        var config = new FPConfig.Builder()
+            .ServerSdkKey("server-8ed48815ef044428826787e9a238b9c6a479f98c")
+            .LocalFileMode(path)
+            .Build();
+
+        using var fp = new FPClient(config, -1);
+        var dataRepo = (IDataRepository)fp.GetType()
+            .GetField("_dataRepository", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(fp)!;
+
+        Assert.False(dataRepo.Initialized);
+        Assert.Empty(dataRepo.Segments);
+        Assert.Empty(dataRepo.Toggles);
     }
 }
