@@ -26,7 +26,7 @@ public class Toggle
 {
     [JsonPropertyName("key")] public string Key { get; init; }
 
-    [JsonPropertyName("enabled")] public bool Enabled { get; init; }
+    [JsonPropertyName("enabled")] public virtual bool Enabled { get; init; }
 
     [JsonPropertyName("trackAccessEvents")]
     public bool? TrackAccessEvents { get; init; }
@@ -35,13 +35,13 @@ public class Toggle
 
     [JsonPropertyName("version")] public long Version { get; init; }
 
-    [JsonPropertyName("disabledServe")] public Serve DisabledServe { get; init; }
+    [JsonPropertyName("disabledServe")] public virtual Serve DisabledServe { get; init; }
 
-    [JsonPropertyName("defaultServe")] public Serve DefaultServe { get; init; }
+    [JsonPropertyName("defaultServe")] public virtual Serve DefaultServe { get; init; }
 
     [JsonPropertyName("rules")] public List<Rule>? Rules { get; init; }
 
-    [JsonPropertyName("variations")] public List<object> Variations { get; init; }
+    [JsonPropertyName("variations")] public virtual List<object> Variations { get; init; }
 
     [JsonPropertyName("prerequisites")] public List<Prerequisite>? Prerequisites { get; init; }
 
@@ -49,20 +49,20 @@ public class Toggle
 
     public EvaluationResult Eval(FPUser user, ImmutableDictionary<string, Toggle> toggles,
         ImmutableDictionary<string, Segment> segments,
-        object? defaultValue, int deep)
+        object? defaultValue, int depth)
     {
         string? reason;
         try
         {
-            return DoEval(user, toggles, segments, defaultValue, deep);
+            return DoEval(user, toggles, segments, defaultValue, depth);
         }
-        catch (Exception e) when (e is PrerequisiteException or PrerequisitesDeepOverflowException)
+        catch (Exception e) when (e is PrerequisiteException or PrerequisitesDepthOverflowException)
         {
             reason = e.Message;
         }
 
         return HitValue(
-            DefaultServe.EvalIndex(user, Key),
+            DisabledServe.EvalIndex(user, Key),
             defaultValue,
             null,
             reason
@@ -70,7 +70,7 @@ public class Toggle
     }
 
     private EvaluationResult DoEval(FPUser user, ImmutableDictionary<string, Toggle> toggles,
-        ImmutableDictionary<string, Segment> segments, object? defaultValue, int deep)
+        ImmutableDictionary<string, Segment> segments, object? defaultValue, int depth)
     {
         if (!Enabled)
         {
@@ -78,22 +78,22 @@ public class Toggle
                 DisabledServe.EvalIndex(user, Key),
                 defaultValue,
                 null,
-                "Toggle disabled"
+                "Toggle disabled."
             );
         }
 
-        if (deep <= 0)
+        if (depth <= 0)
         {
-            throw new PrerequisitesDeepOverflowException("Prerequisite deep overflow");
+            throw new PrerequisitesDepthOverflowException("Prerequisite depth overflow");
         }
 
-        if (!MeetPrerequisite(user, toggles, segments, deep))
+        if (!MeetPrerequisite(user, toggles, segments, depth))
         {
             return HitValue(
-                DefaultServe.EvalIndex(user, Key),
+                DisabledServe.EvalIndex(user, Key),
                 defaultValue,
                 null,
-                "Default rule hit"
+                "Toggle disabled."
             );
         }
 
@@ -121,8 +121,8 @@ public class Toggle
         );
     }
 
-    private bool MeetPrerequisite(FPUser user, ImmutableDictionary<string, Toggle> toggles,
-        ImmutableDictionary<string, Segment> segments, int deep)
+    protected virtual bool MeetPrerequisite(FPUser user, ImmutableDictionary<string, Toggle> toggles,
+        ImmutableDictionary<string, Segment> segments, int depth)
     {
         if (Prerequisites is null || Prerequisites.Count == 0)
         {
@@ -136,7 +136,7 @@ public class Toggle
                 throw new PrerequisiteException($"Prerequisite not exist: {Key}");
             }
 
-            var eval = toggle.DoEval(user, toggles, segments, null, deep - 1);
+            var eval = toggle.DoEval(user, toggles, segments, null, depth - 1);
             if (eval.Value is null)
             {
                 return false;

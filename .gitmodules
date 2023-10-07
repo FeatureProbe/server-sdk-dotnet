@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[submodule "tests/FeatureProbe.Server.Sdk.UT/resources/test"]
-	path = tests/FeatureProbe.Server.Sdk.UT/resources/test
+[submodule "tests/FeatureProbe.Server.Sdk.Tests/resources/test"]
+	path = tests/FeatureProbe.Server.Sdk.Tests/resources/test
 	url = git@github.com:FeatureProbe/server-sdk-specification.git

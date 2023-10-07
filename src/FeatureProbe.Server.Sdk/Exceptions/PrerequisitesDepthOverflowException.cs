@@ -16,9 +16,9 @@
 
 namespace FeatureProbe.Server.Sdk.Exceptions;
 
-public class PrerequisitesDeepOverflowException : Exception
+public class PrerequisitesDepthOverflowException : Exception
 {
-    public PrerequisitesDeepOverflowException(string? message) : base(message)
+    public PrerequisitesDepthOverflowException(string? message) : base(message)
     {
     }
 }

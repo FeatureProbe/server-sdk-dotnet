@@ -142,6 +142,12 @@ public class FPClientTest
                         var stringDetailRes = fpClient.StringDetail(toggleKey, user, defaultValue.GetValue<string>());
                         _testOutputHelper.WriteLine(JsonSerializer.Serialize(stringDetailRes));
                         Assert.Equal(expectValue.GetValue<string>(), stringDetailRes.Value);
+                        if (expectResult["reason"] != null)
+                        {
+                            Assert.Contains(expectResult["reason"]!.ToString().ToLower(),
+                                stringDetailRes.Reason!.ToLower());
+                        }
+
                         break;
                     }
                 }
