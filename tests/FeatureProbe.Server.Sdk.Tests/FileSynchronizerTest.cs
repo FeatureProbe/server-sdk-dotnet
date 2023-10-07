@@ -26,15 +26,15 @@ public class FileSynchronizerTest
     {
         var config = new FPConfig.Builder()
             .ServerSdkKey("server-8ed48815ef044428826787e9a238b9c6a479f98c")
-            .LocalFileMode(Path.Combine(Environment.CurrentDirectory, "resources/datasource/repo.json"))
+            .LocalFileMode("resources/datasource/repo.json")
             .Build();
 
         using var fp = new FPClient(config, 100);
         var dataRepo = (IDataRepository)fp.GetType()
             .GetField("_dataRepository", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(fp)!;
 
+        Assert.NotEmpty(dataRepo.Segments);
+        Assert.NotEmpty(dataRepo.Toggles);
         Assert.True(dataRepo.Initialized);
-        Assert.True(dataRepo.Segments.Count > 0);
-        Assert.True(dataRepo.Toggles.Count > 0);
     }
 }

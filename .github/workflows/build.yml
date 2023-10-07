@@ -35,8 +35,8 @@ jobs:
             6.0.x
             7.0.x
       - run: dotnet restore
-      - run: dotnet build -c Release --no-restore
-      - run: dotnet test -c Release --no-build --no-restore --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      - run: dotnet build --no-restore
+      - run: dotnet test --no-build --no-restore --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
       - if: failure()
         uses: actions/upload-artifact@v3
         with:
