@@ -15,8 +15,10 @@
 name: Release
 
 on:
-  push:
-    branches: [ main ]
+  release:
+    types:
+      - released
+      - prereleased
 
 jobs:
   build:
