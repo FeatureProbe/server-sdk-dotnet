@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github Workflow", "Github W
 		.github\workflows\build.yml = .github\workflows\build.yml
 		.github\workflows\codeql.yml = .github\workflows\codeql.yml
 		.github\workflows\release.yml = .github\workflows\release.yml
-		.github\workflows\docs.yml = .github\workflows\docs.yml
-		.github\workflows\lint.yml = .github\workflows\lint.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{E283CF98-D2A5-445A-9474-F0DE1F587F9F}"
