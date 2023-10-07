@@ -24,17 +24,18 @@ public class FileSynchronizerTest
     [Fact]
     private void TestDeserializeFile()
     {
+        var path = Path.Combine("resources", "datasource", "repo.json");
         var config = new FPConfig.Builder()
             .ServerSdkKey("server-8ed48815ef044428826787e9a238b9c6a479f98c")
-            .LocalFileMode("resources/datasource/repo.json")
+            .LocalFileMode(path)
             .Build();
 
         using var fp = new FPClient(config, 100);
         var dataRepo = (IDataRepository)fp.GetType()
             .GetField("_dataRepository", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(fp)!;
 
+        Assert.True(dataRepo.Initialized);
         Assert.NotEmpty(dataRepo.Segments);
         Assert.NotEmpty(dataRepo.Toggles);
-        Assert.True(dataRepo.Initialized);
     }
 }

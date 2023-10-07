@@ -32,7 +32,7 @@ public class FPClientTest
     {
         _testOutputHelper = testOutputHelper;
 
-        var data = File.ReadAllText("resources/test/spec/toggle_simple_spec.json");
+        var data = File.ReadAllText(Path.Combine("resources", "test", "spec", "toggle_simple_spec.json"));
         _testCase = JsonSerializer.Deserialize<JsonNode>(data)!;
     }
 

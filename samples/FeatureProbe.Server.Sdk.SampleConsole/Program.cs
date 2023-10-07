@@ -33,7 +33,7 @@ public class Program
             //// Below are three modes of synchronizing toggles, you can choose one of them
             .StreamingMode()
             // .PollingMode()
-            // .LocalFileMode("datasource/repo.json")
+            // .LocalFileMode(Path.Combine("datasource", "repo.json"))
             //// Optionally provide a logger factory to enable logging
             .WithLoggers(LoggerFactory.Create(builder => builder.AddNLog()))
             .Build();
