@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-﻿using FeatureProbe.Server.Sdk;
+using FeatureProbe.Server.Sdk;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
