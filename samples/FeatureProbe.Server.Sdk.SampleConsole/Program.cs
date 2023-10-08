@@ -27,12 +27,13 @@ public class Program
             //// Must provide the server-side SDK Key for your project and environment
             .ServerSdkKey("server-8ed48815ef044428826787e9a238b9c6a479f98c")
             //// RemoteUrl is where you deploy the FeatureProbe server, by default, SDK will use its API for reporting events, synchronizing toggles, and so
-            .RemoteUrl("https://featureprobe.io/server") // FeatureProbe online demo
-            // .RemoteUrl("http://localhost:4009/server")  // Default URL for local Docker installation, also the default value if unset
+            .RemoteUrl(
+                "http://localhost:4009/server") // Default URL for local Docker installation, also the default value if unset
+            // .RemoteUrl("https://featureprobe.io/server") // FeatureProbe online demo
             //// Below are three modes of synchronizing toggles, you can choose one of them
             .StreamingMode()
             // .PollingMode()
-            // .LocalFileMode("datasource/repo.json")
+            // .LocalFileMode(Path.Combine("datasource", "repo.json"))
             //// Optionally provide a logger factory to enable logging
             .WithLoggers(LoggerFactory.Create(builder => builder.AddNLog()))
             .Build();

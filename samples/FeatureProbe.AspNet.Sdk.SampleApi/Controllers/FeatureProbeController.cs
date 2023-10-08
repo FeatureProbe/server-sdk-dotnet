@@ -14,11 +14,26 @@
  * limitations under the License.
  */
 
-namespace FeatureProbe.Server.Sdk.Exceptions;
+using FeatureProbe.Server.Sdk;
+using Microsoft.AspNetCore.Mvc;
 
-public class PrerequisitesDeepOverflowException : Exception
+namespace FeatureProbe.AspNet.Sdk.SampleApi.Controllers;
+
+[ApiController]
+[Route("/featureprobe")]
+public class FeatureProbeController : ControllerBase
 {
-    public PrerequisitesDeepOverflowException(string? message) : base(message)
+    private readonly FPClient _fpClient;
+
+    public FeatureProbeController(FPClient fpClient)
     {
+        _fpClient = fpClient;
+    }
+
+    [HttpGet]
+    public FPDetail<bool> Get([FromQuery] string userId)
+    {
+        var user = new FPUser().With("userId", userId);
+        return _fpClient.BoolDetail("campaign_allow_list", user, false);
     }
 }

@@ -23,6 +23,7 @@ header:
     - "**/*.md"
     - "**/obj/**/*"
     - "**/bin/**/*"
+    - "**/TestResults/**/*"
     - "**/*.sln"
     - "**/*.json"
     - "nlog.config"

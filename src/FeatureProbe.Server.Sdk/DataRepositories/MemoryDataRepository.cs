@@ -68,7 +68,7 @@ public class MemoryDataRepository : IDataRepository
         return !_initialized ? null : _data?.Segments.TryGetValue(key);
     }
 
-    public virtual void Refresh(Repository? repo)
+    public void Refresh(Repository? repo)
     {
         if (repo is null)
         {

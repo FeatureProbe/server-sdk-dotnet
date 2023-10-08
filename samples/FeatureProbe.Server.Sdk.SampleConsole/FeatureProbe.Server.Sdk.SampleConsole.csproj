@@ -21,6 +21,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
     <Description>Example Console app for using FeatureProbe.Server.Sdk</Description>
   </PropertyGroup>
 

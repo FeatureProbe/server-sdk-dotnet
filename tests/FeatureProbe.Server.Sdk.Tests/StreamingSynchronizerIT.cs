@@ -27,7 +27,8 @@ public class StreamingSynchronizerIT
 
     internal static readonly Mock<MemoryDataRepository> _mockedDataRepository = new();
 
-    [Fact]
+    // temporary disabled as `https://featureprobe.io/server` is not available now
+    // [Fact]
     private void TestSocketRealtimeToggleUpdate()
     {
         var config = new FPConfig.Builder()

@@ -20,5 +20,26 @@ on:
   pull_request:
     branches: [ main ]
 
-# strategy: linux, macos, windows
-# test & cov
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            3.1.x
+            5.0.x
+            6.0.x
+            7.0.x
+      - run: dotnet restore
+      - run: dotnet build --no-restore
+      - run: dotnet test --no-build --no-restore --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      - if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: TestResults-${{ github.run_id }}
+          path: '**/TestResults/*'
+      - uses: codecov/codecov-action@v2

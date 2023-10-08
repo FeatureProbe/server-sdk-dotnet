@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-namespace FeatureProbe.AspNet.Sdk.SampleApi;
+namespace FeatureProbe.Server.Sdk.Exceptions;
 
-public class WeatherForecast
+public class PrerequisitesDepthOverflowException : Exception
 {
-    public DateOnly Date { get; set; }
-
-    public int TemperatureC { get; set; }
-
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-
-    public string? Summary { get; set; }
+    public PrerequisitesDepthOverflowException(string? message) : base(message)
+    {
+    }
 }

@@ -15,14 +15,18 @@
 name: Release
 
 on:
-  push:
-    branches: [ main ]
+  release:
+    types:
+      - released
+      - prereleased
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  release:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
@@ -30,4 +34,25 @@ jobs:
             5.0.x
             6.0.x
             7.0.x
-          include-prerelease: true
+      - run: dotnet restore
+      - run: dotnet build --no-restore
+      - run: dotnet test --no-build --no-restore --verbosity normal --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+      - name: Pack packages
+        run: |
+          $ReleaseTag = "${{ github.event.release.tag_name }}";
+          $Version = ($ReleaseTag).TrimStart('v');
+          echo "Publishing version: $Version";
+          dotnet pack -c Release -o packages /p:PackageVersion=$Version /p:Version=$Version;
+      - uses: actions/upload-artifact@v3
+        with:
+          name: 'packages-${{ github.event.release.tag_name }}'
+          path: './packages'
+
+#      - name: Upload to github packages
+#        run: |
+#          dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -n github.com -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text
+#          dotnet nuget push .\packages\*.nupkg -s github.com -k ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+      - name: Upload to nuget
+        run: |
+          dotnet nuget push .\packages\*.nupkg -s nuget.org -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate

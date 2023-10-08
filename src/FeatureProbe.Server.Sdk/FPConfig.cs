@@ -37,7 +37,7 @@ public sealed class FPConfig
         SynchronizerUrl = builder.SynchronizerUrlVal ?? $"{RemoteUrl}/api/server-sdk/toggles";
         EventUrl = builder.EventUrlVal ?? $"{RemoteUrl}/api/events";
         RealtimeUrl = builder.RealtimeUrlVal ?? $"{RemoteUrl}/realtime";
-        FileLocation = builder.FileLocation ?? "datasource/repo.json";
+        FileLocation = builder.FileLocation ?? Path.Combine("datasource", "repo.json");
         RefreshInterval = builder.RefreshInterval ?? TimeSpan.FromSeconds(5);
         HttpConfig = builder.HttpConfig ?? new HttpConfig();
         PrerequisiteDeep = builder.PrerequisiteDeepVal ?? 20;
@@ -136,7 +136,7 @@ public sealed class FPConfig
         /// <summary>
         ///     URL for FeatureProbe server, default is a local server, i.e. http://localhost:4009/server.
         /// </summary>
-        public Builder RemoteUrl(string url)
+        public Builder RemoteUrl(string? url)
         {
             RemoteUrlVal = url;
             return this;
@@ -145,7 +145,7 @@ public sealed class FPConfig
         /// <summary>
         ///     Overwrite the URL for synchronizer.
         /// </summary>
-        public Builder SynchronizerUrl(string url)
+        public Builder SynchronizerUrl(string? url)
         {
             SynchronizerUrlVal = url;
             return this;
@@ -154,7 +154,7 @@ public sealed class FPConfig
         /// <summary>
         ///     Overwrite the URL for event reporting.
         /// </summary>
-        public Builder EventUrl(string url)
+        public Builder EventUrl(string? url)
         {
             EventUrlVal = url;
             return this;
@@ -165,7 +165,7 @@ public sealed class FPConfig
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public Builder RealtimeUrl(string url)
+        public Builder RealtimeUrl(string? url)
         {
             RealtimeUrlVal = url;
             return this;
@@ -177,9 +177,9 @@ public sealed class FPConfig
         /// <param name="location">
         ///     File path, default will be 'datasource/repo.json' under current directory.
         /// </param>
-        public Builder LocalFileMode(string location = "datasource/repo.json")
+        public Builder LocalFileMode(string? location)
         {
-            FileLocation = location;
+            FileLocation = location ?? Path.Combine("datasource", "repo.json");
             SynchronizerFactory = new FileSynchronizerFactory();
             return this;
         }
