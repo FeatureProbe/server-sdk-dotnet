@@ -28,4 +28,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FeatureProbe.AspNet.Sdk\FeatureProbe.AspNet.Sdk.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -14,15 +14,26 @@
  * limitations under the License.
  */
 
-namespace FeatureProbe.AspNet.Sdk.SampleApi;
+using FeatureProbe.Server.Sdk;
+using Microsoft.AspNetCore.Mvc;
 
-public class WeatherForecast
+namespace FeatureProbe.AspNet.Sdk.SampleApi.Controllers;
+
+[ApiController]
+[Route("/featureprobe")]
+public class FeatureProbeController : ControllerBase
 {
-    public DateOnly Date { get; set; }
+    private readonly FPClient _fpClient;
 
-    public int TemperatureC { get; set; }
+    public FeatureProbeController(FPClient fpClient)
+    {
+        _fpClient = fpClient;
+    }
 
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-
-    public string? Summary { get; set; }
+    [HttpGet]
+    public FPDetail<bool> Get([FromQuery] string userId)
+    {
+        var user = new FPUser().With("userId", userId);
+        return _fpClient.BoolDetail("campaign_allow_list", user, false);
+    }
 }

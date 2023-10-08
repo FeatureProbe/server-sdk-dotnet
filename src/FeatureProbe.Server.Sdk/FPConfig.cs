@@ -136,7 +136,7 @@ public sealed class FPConfig
         /// <summary>
         ///     URL for FeatureProbe server, default is a local server, i.e. http://localhost:4009/server.
         /// </summary>
-        public Builder RemoteUrl(string url)
+        public Builder RemoteUrl(string? url)
         {
             RemoteUrlVal = url;
             return this;
@@ -145,7 +145,7 @@ public sealed class FPConfig
         /// <summary>
         ///     Overwrite the URL for synchronizer.
         /// </summary>
-        public Builder SynchronizerUrl(string url)
+        public Builder SynchronizerUrl(string? url)
         {
             SynchronizerUrlVal = url;
             return this;
@@ -154,7 +154,7 @@ public sealed class FPConfig
         /// <summary>
         ///     Overwrite the URL for event reporting.
         /// </summary>
-        public Builder EventUrl(string url)
+        public Builder EventUrl(string? url)
         {
             EventUrlVal = url;
             return this;
@@ -165,7 +165,7 @@ public sealed class FPConfig
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public Builder RealtimeUrl(string url)
+        public Builder RealtimeUrl(string? url)
         {
             RealtimeUrlVal = url;
             return this;

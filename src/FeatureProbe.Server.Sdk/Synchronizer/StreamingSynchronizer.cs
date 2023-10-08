@@ -78,7 +78,14 @@ public class StreamingSynchronizer : ISynchronizer
             await _pollingSynchronizer.PollAsync();
         });
 
-        socket.ConnectAsync().Wait();
+        try
+        {
+            socket.ConnectAsync().Wait();
+        }
+        catch (Exception e)
+        {
+            Loggers.Synchronizer?.Log(LogLevel.Error, e, "Socket connect error, fallback to polling synchronizer");
+        }
 
         return socket;
     }
